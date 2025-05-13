@@ -10,12 +10,10 @@ CONFIG += c++17
 
 SOURCES += \
     Dashboard.cpp \
-    DatabaseManager.cpp \
     main.cpp
 
 HEADERS += \
-    Dashboard.h \
-    DatabaseManager.h
+    Dashboard.h
 
 FORMS += \
     Dashboard.ui
