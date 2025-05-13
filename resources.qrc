@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>fonts/Poppins-Bold.ttf</file>
+        <file>fonts/Poppins-Italic.ttf</file>
+        <file>fonts/Poppins-Medium.ttf</file>
+        <file>fonts/Poppins-MediumItalic.ttf</file>
+        <file>fonts/Poppins-Regular.ttf</file>
+        <file>fonts/Poppins-SemiBold.ttf</file>
+        <file>fonts/Poppins-SemiBoldItalic.ttf</file>
+    </qresource>
+</RCC>

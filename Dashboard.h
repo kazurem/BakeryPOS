@@ -17,7 +17,10 @@ public:
     dashboard(QWidget *parent = nullptr);
     ~dashboard();
 
-private:
+  private slots:
+    void on_AddXButton_clicked();
+
+  private:
     Ui::dashboard *ui;
 };
 #endif // DASHBOARD_H

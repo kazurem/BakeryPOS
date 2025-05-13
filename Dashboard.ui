@@ -1,0 +1,669 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>dashboard</class>
+ <widget class="QMainWindow" name="dashboard">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1354</width>
+    <height>750</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>500</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>dashboard</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: white;</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="styleSheet">
+    <string notr="true">/*--------------------------------- Push Buttons (END)-------------------------------------*/
+QPushButton {
+	color: black;
+	font-weight: bold;
+	font-size: 15px;
+
+	border-radius: 5px;
+	border: 1px solid #1F1F1F;
+	
+	background-color: white;
+}
+
+QPushButton:hover {
+	background-color: #C6C6C6;
+}
+
+#LogoutButton {
+	color: white;
+
+	border: 1px solid #E0E0E0;
+
+	background-color: #FD3535;
+}
+
+#LogoutButton:hover {
+	background-color: #A21619;
+}
+
+#AddXButton
+{
+	color:white;
+
+	padding:10px;
+
+	border-radius: 20px;
+	border: 2px solid #1F1F1F;
+
+	background-color: #8946A6;
+}
+
+#FilterByXButton
+{
+	color:black;
+
+	padding: 10px;
+
+	border-radius: 20px;
+	border: 2px solid #1F1F1F;
+
+	background-color: white;
+}
+/*--------------------------------- Push Buttons (END)-------------------------------------*/
+
+
+/*--------------------------------- Line Edits (START)---------------------------------------*/
+#SearchByXLineEdit
+{
+	color: black;
+
+	padding: 10px;
+
+	border-radius: 20px;
+	border: 1px solid #1F1F1F;
+
+	background-color: #F9F9F9;
+}
+/*--------------------------------- Line Edits (END)------------------------------------------*/
+
+
+/*--------------------------------- Label (START)-----------------------------------*/
+#FormNameLabel
+{
+	color: black;
+	font-weight: bold;
+	font-size: 25px;
+}
+
+#SideBarLogoLabel
+{
+	color: black;
+	font-weight: bold;
+	font-size: 30px;
+
+	background-color: transparent;
+}
+/*--------------------------------- Labels (END)--------------------------------------*/
+
+
+/*--------------------------------- Widgets (START)-------------------------------------*/
+#SideBarWidget
+{
+	background-color: #F9F9F9;
+}
+/*--------------------------------- Widgets (END)-------------------------------------*/
+
+
+/*--------------------------------- Tables (START)-------------------------------------*/
+QTableWidget {
+
+    padding: 5px;
+
+    border: 1px solid #CCC;
+    border-radius: 5px;
+
+    gridline-color: #EEE;
+}
+
+QHeaderView::section {
+    color: #333;
+    font-size: 11pt;
+
+    padding: 4px;
+
+    background-color: #E0E0E0;
+}
+
+QTableWidget::item {
+	color: black;
+
+    padding: 5px;
+}
+
+QTableWidget::item:selected {
+    color: #FF999B;
+
+	background-color: #D0F0FF;
+}
+/*--------------------------------- Tables (END)-------------------------------------*/
+
+</string>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="15,70">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>5</number>
+    </property>
+    <property name="topMargin">
+     <number>5</number>
+    </property>
+    <property name="rightMargin">
+     <number>5</number>
+    </property>
+    <property name="bottomMargin">
+     <number>5</number>
+    </property>
+    <item>
+     <widget class="QWidget" name="SideBarWidget" native="true">
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2" stretch="10,25,20,5">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>11</number>
+       </property>
+       <item>
+        <widget class="QLabel" name="SideBarLogoLabel">
+         <property name="styleSheet">
+          <string notr="true">color: black;
+font-weight: bold;
+font-size: 30px;</string>
+         </property>
+         <property name="text">
+          <string>BakeryPOS</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignmentFlag::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="SideBarButtonsVLayout">
+         <property name="spacing">
+          <number>5</number>
+         </property>
+         <item>
+          <widget class="QPushButton" name="UsersButton">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Users</string>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="AnalyticsButton">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Analytics</string>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="CategoriesButton">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Categories</string>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="ProductsButton">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Products</string>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="InvoiceButton">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Invoice</string>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer name="SideBarVerticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Orientation::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="LogoutButton">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <property name="text">
+          <string>Login</string>
+         </property>
+         <property name="flat">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QWidget" name="MainDisplayWidget" native="true">
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QStackedWidget" name="MainDisplayStackedWidget">
+         <property name="currentIndex">
+          <number>1</number>
+         </property>
+         <widget class="QWidget" name="AddXPage">
+          <layout class="QVBoxLayout" name="verticalLayout_7">
+           <item>
+            <widget class="QLabel" name="PageLabel">
+             <property name="text">
+              <string>Add X</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="AddImageSection">
+             <property name="text">
+              <string>TextLabel</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="AddXPageDataEntryVLayout">
+             <item>
+              <layout class="QHBoxLayout" name="AddXPageDataEntryHLayout">
+               <item>
+                <layout class="QVBoxLayout" name="AddXPageDataEntryFirstHalfVLayout">
+                 <item>
+                  <widget class="QLabel" name="XAttribute1Label">
+                   <property name="text">
+                    <string>TextLabel</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="XAttribute1LineEdit"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="XAttribute2Label">
+                   <property name="text">
+                    <string>TextLabel</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="XAttribute2LineEdit"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="XAttribute3Label">
+                   <property name="text">
+                    <string>TextLabel</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="XAttribute3LineEdit"/>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QVBoxLayout" name="AddXPageDataEntrySecondHalfVLayout">
+                 <item>
+                  <widget class="QLabel" name="XAttribute4Label">
+                   <property name="text">
+                    <string>TextLabel</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="XAttribute4LineEdit"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="XAttribute5Label">
+                   <property name="text">
+                    <string>TextLabel</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="XAttribute5LineEdit"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="XAttribute6Label">
+                   <property name="text">
+                    <string>TextLabel</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="XAttribute6LineEdit"/>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="AddXPageButtonsHLayout">
+               <item>
+                <widget class="QPushButton" name="DiscardButton">
+                 <property name="text">
+                  <string>PushButton</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="SaveButton">
+                 <property name="text">
+                  <string>PushButton</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="XPage">
+          <layout class="QVBoxLayout" name="verticalLayout">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <layout class="QHBoxLayout" name="TopBarHLayout" stretch="0,0,0,0,0">
+             <property name="spacing">
+              <number>20</number>
+             </property>
+             <property name="topMargin">
+              <number>20</number>
+             </property>
+             <property name="bottomMargin">
+              <number>20</number>
+             </property>
+             <item>
+              <widget class="QLabel" name="FormNameLabel">
+               <property name="styleSheet">
+                <string notr="true">font-size: 25px;
+color: black;
+font-weight: bold;</string>
+               </property>
+               <property name="text">
+                <string>ExampleForm</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="SearchByXLineEdit">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>300</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">border-radius: 20px;
+padding: 10px;
+background-color: rgb(249, 249, 249);
+border: 1px solid #1F1F1F;
+color: black;</string>
+               </property>
+               <property name="readOnly">
+                <bool>false</bool>
+               </property>
+               <property name="placeholderText">
+                <string>Search by X.....</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer">
+               <property name="orientation">
+                <enum>Qt::Orientation::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="FilterByXButton">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>-1</pointsize>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="text">
+                <string>ExampleButton</string>
+               </property>
+               <property name="flat">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="AddXButton">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>-1</pointsize>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="text">
+                <string>+ ExampleAdd</string>
+               </property>
+               <property name="flat">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QTableWidget" name="XPageTableWidget">
+             <property name="styleSheet">
+              <string notr="true"/>
+             </property>
+             <property name="alternatingRowColors">
+              <bool>true</bool>
+             </property>
+             <property name="selectionMode">
+              <enum>QAbstractItemView::SelectionMode::SingleSelection</enum>
+             </property>
+             <property name="selectionBehavior">
+              <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+             </property>
+             <property name="sortingEnabled">
+              <bool>true</bool>
+             </property>
+             <attribute name="horizontalHeaderCascadingSectionResizes">
+              <bool>true</bool>
+             </attribute>
+             <attribute name="horizontalHeaderDefaultSectionSize">
+              <number>200</number>
+             </attribute>
+             <attribute name="horizontalHeaderStretchLastSection">
+              <bool>true</bool>
+             </attribute>
+             <attribute name="verticalHeaderDefaultSectionSize">
+              <number>70</number>
+             </attribute>
+             <attribute name="verticalHeaderHighlightSections">
+              <bool>true</bool>
+             </attribute>
+             <attribute name="verticalHeaderShowSortIndicator" stdset="0">
+              <bool>true</bool>
+             </attribute>
+             <attribute name="verticalHeaderStretchLastSection">
+              <bool>true</bool>
+             </attribute>
+             <column>
+              <property name="text">
+               <string>ExampleID</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>ExampleColumn1</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>ExampleColumn2</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>ExampleColumn3</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>ExampleColumn4</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>ExampleColumn5</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>ExampleColumn6</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>ExampleColumn7</string>
+              </property>
+             </column>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
