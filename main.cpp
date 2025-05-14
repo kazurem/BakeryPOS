@@ -4,19 +4,19 @@
 
 int main(int argc, char *argv[]) {
 
-    QApplication a(argc, argv);
+    QApplication App(argc, argv);
 
-    int id = QFontDatabase::addApplicationFont(":/fonts/Poppins-Medium.ttf");
-    QString family = QFontDatabase::applicationFontFamilies(id).at(0);
-    qDebug() << "Loaded font:" << family;
+    // Loading and setting the font
+    int ID = QFontDatabase::addApplicationFont(":/fonts/Poppins-Medium.ttf");
+    QString Family = QFontDatabase::applicationFontFamilies(ID).at(0);
 
-    QFont appFont(family);
+    QFont AppFont(Family);
 
-    a.setFont(appFont);
+    App.setFont(AppFont);
 
-    // Your MainWindow or app init
+    // Making the dashboard
     dashboard w;
     w.show();
 
-    return a.exec();
+    return App.exec();
 }

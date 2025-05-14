@@ -30,26 +30,32 @@ QPushButton {
 	font-weight: bold;
 	font-size: 15px;
 
-	border-radius: 5px;
-	border: 1px solid #1F1F1F;
+	border-radius: 6.28px;
+	border: 1.82px solid #1F1F1F;
 	
 	background-color: white;
 }
 
-QPushButton:hover {
-	background-color: #C6C6C6;
+QPushButton:checked
+{
+	background-color: #0096C7;
+	border: 1.82px solid #E0E0E0;
+	color:white;
 }
+
 
 #LogoutButton {
 	color: white;
 
-	border: 1px solid #E0E0E0;
+	border: 1.82px solid #E0E0E0;
 
-	background-color: #FD3535;
+	background-color: #e30a17;
 }
 
-#LogoutButton:hover {
-	background-color: #A21619;
+#LogoutButton:hover {	
+	background-color: white;
+	border: 1.82px solid #1F1F1F;
+	color: black;
 }
 
 #AddXButton
@@ -58,10 +64,10 @@ QPushButton:hover {
 
 	padding:10px;
 
-	border-radius: 20px;
-	border: 2px solid #1F1F1F;
+	border-radius: 21.42px;
+	border: 1.82px solid #1F1F1F;
 
-	background-color: #8946A6;
+	background-color: #0096C7;
 }
 
 #FilterByXButton
@@ -70,8 +76,8 @@ QPushButton:hover {
 
 	padding: 10px;
 
-	border-radius: 20px;
-	border: 2px solid #1F1F1F;
+	border-radius: 21.42px;
+	border: 1.82px solid #1F1F1F;
 
 	background-color: white;
 }
@@ -85,10 +91,10 @@ QPushButton:hover {
 
 	padding: 10px;
 
-	border-radius: 20px;
-	border: 1px solid #1F1F1F;
+	border-radius: 21.42px;
+	border: 1.82px solid #1F1F1F;
 
-	background-color: #F9F9F9;
+	background-color: white;
 }
 /*--------------------------------- Line Edits (END)------------------------------------------*/
 
@@ -115,7 +121,7 @@ QPushButton:hover {
 /*--------------------------------- Widgets (START)-------------------------------------*/
 #SideBarWidget
 {
-	background-color: #F9F9F9;
+	background-color: #ADE8F4;
 }
 /*--------------------------------- Widgets (END)-------------------------------------*/
 
@@ -134,10 +140,11 @@ QTableWidget {
 QHeaderView::section {
     color: #333;
     font-size: 11pt;
+font-weight: bold;
 
     padding: 4px;
 
-    background-color: #E0E0E0;
+    background-color: white;
 }
 
 QTableWidget::item {
@@ -160,16 +167,16 @@ QTableWidget::item:selected {
      <number>0</number>
     </property>
     <property name="leftMargin">
-     <number>5</number>
+     <number>0</number>
     </property>
     <property name="topMargin">
-     <number>5</number>
+     <number>0</number>
     </property>
     <property name="rightMargin">
-     <number>5</number>
+     <number>0</number>
     </property>
     <property name="bottomMargin">
-     <number>5</number>
+     <number>0</number>
     </property>
     <item>
      <widget class="QWidget" name="SideBarWidget" native="true">
@@ -179,6 +186,9 @@ QTableWidget::item:selected {
       <layout class="QVBoxLayout" name="verticalLayout_2" stretch="10,25,20,5">
        <property name="spacing">
         <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>11</number>
        </property>
        <property name="rightMargin">
         <number>11</number>
@@ -214,6 +224,9 @@ font-size: 30px;</string>
            <property name="text">
             <string>Users</string>
            </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
            <property name="flat">
             <bool>true</bool>
            </property>
@@ -229,6 +242,9 @@ font-size: 30px;</string>
            </property>
            <property name="text">
             <string>Analytics</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
            </property>
            <property name="flat">
             <bool>true</bool>
@@ -246,6 +262,9 @@ font-size: 30px;</string>
            <property name="text">
             <string>Categories</string>
            </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
            <property name="flat">
             <bool>true</bool>
            </property>
@@ -262,6 +281,9 @@ font-size: 30px;</string>
            <property name="text">
             <string>Products</string>
            </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
            <property name="flat">
             <bool>true</bool>
            </property>
@@ -277,6 +299,9 @@ font-size: 30px;</string>
            </property>
            <property name="text">
             <string>Invoice</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
            </property>
            <property name="flat">
             <bool>true</bool>
@@ -310,7 +335,10 @@ font-size: 30px;</string>
           <string notr="true"/>
          </property>
          <property name="text">
-          <string>Login</string>
+          <string>Logout</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
          </property>
          <property name="flat">
           <bool>true</bool>
@@ -495,11 +523,7 @@ font-weight: bold;</string>
                 </size>
                </property>
                <property name="styleSheet">
-                <string notr="true">border-radius: 20px;
-padding: 10px;
-background-color: rgb(249, 249, 249);
-border: 1px solid #1F1F1F;
-color: black;</string>
+                <string notr="true"/>
                </property>
                <property name="readOnly">
                 <bool>false</bool>
@@ -542,6 +566,9 @@ color: black;</string>
                <property name="text">
                 <string>ExampleButton</string>
                </property>
+               <property name="checkable">
+                <bool>true</bool>
+               </property>
                <property name="flat">
                 <bool>true</bool>
                </property>
@@ -567,6 +594,9 @@ color: black;</string>
                <property name="text">
                 <string>+ ExampleAdd</string>
                </property>
+               <property name="checkable">
+                <bool>true</bool>
+               </property>
                <property name="flat">
                 <bool>true</bool>
                </property>
@@ -579,6 +609,9 @@ color: black;</string>
              <property name="styleSheet">
               <string notr="true"/>
              </property>
+             <property name="verticalScrollBarPolicy">
+              <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
+             </property>
              <property name="alternatingRowColors">
               <bool>true</bool>
              </property>
@@ -587,6 +620,9 @@ color: black;</string>
              </property>
              <property name="selectionBehavior">
               <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+             </property>
+             <property name="showGrid">
+              <bool>false</bool>
              </property>
              <property name="sortingEnabled">
               <bool>true</bool>
@@ -600,6 +636,9 @@ color: black;</string>
              <attribute name="horizontalHeaderStretchLastSection">
               <bool>true</bool>
              </attribute>
+             <attribute name="verticalHeaderVisible">
+              <bool>false</bool>
+             </attribute>
              <attribute name="verticalHeaderDefaultSectionSize">
               <number>70</number>
              </attribute>
@@ -610,7 +649,7 @@ color: black;</string>
               <bool>true</bool>
              </attribute>
              <attribute name="verticalHeaderStretchLastSection">
-              <bool>true</bool>
+              <bool>false</bool>
              </attribute>
              <column>
               <property name="text">

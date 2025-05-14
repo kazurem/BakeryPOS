@@ -7,5 +7,9 @@
         <file>fonts/Poppins-Regular.ttf</file>
         <file>fonts/Poppins-SemiBold.ttf</file>
         <file>fonts/Poppins-SemiBoldItalic.ttf</file>
+        <file>icons/delete.png</file>
+        <file>icons/edit.png</file>
+        <file>icons/search.png</file>
+        <file>icons/menu.png</file>
     </qresource>
 </RCC>

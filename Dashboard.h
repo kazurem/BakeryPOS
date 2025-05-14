@@ -19,8 +19,10 @@ public:
 
   private slots:
     void on_AddXButton_clicked();
+    void ToggleSideMenu();
 
   private:
     Ui::dashboard *ui;
+    bool           sideMenuVisible;
 };
 #endif // DASHBOARD_H

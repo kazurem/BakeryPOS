@@ -33,5 +33,6 @@ DISTFILES += \
     fonts/Poppins-MediumItalic.ttf \
     fonts/Poppins-Regular.ttf \
     fonts/Poppins-SemiBold.ttf \
-    fonts/Poppins-SemiBoldItalic.ttf
+    fonts/Poppins-SemiBoldItalic.ttf \
+    icons/search.png
 
