@@ -1,26 +1,33 @@
-#include "DatabaseManager.h"
+#include "MySQL.hpp"
 #include "dashboard.h"
+#include <QApplication>
 #include <QDebug>
 
-#include <QApplication>
-
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
     dashboard w;
     w.show();
 
-    DatabaseManager &Database = DatabaseManager::Instance();
+    static MySQLClass *MySQL = new MySQLadmin();
 
-    if (Database.Connect("localhost", "mydb", "root", "khalid")) {
-        qDebug() << "Successful\n";
-        QVariantList products =
-            Database.Select("products", {"ProductID", "Name", "Category"}, {},
-                            "date_added DESC", 10, "");
-        qDebug() << products;
-    } else {
-        qDebug() << "Unsuccesful\n";
-    }
+    // QSqlQuery query; // = "SELECT * FROM test ORDER BY tAddr;";
+    // query.prepare("SELECT * FROM test ORDER BY tAddr;");
+    // qDebug() << "Query executed: "
+    // << query.exec("SELECT * FROM test ORDER BY tAddr;");
+    // query.next();
+    // qDebug() << query.value(0);
+    // query.next();
+    // qDebug() << query.value(1);
+
+    QVariantList result = MySQL->SELECT({
+        // .SELECT = {{"tID"}, {"tName", "First Name"}, {"tAddr", "Address"}},
+        .SELECT = {{"''"}, {"tAddr"}, {"AVG(tID)", "Average tID"}},
+        .FROM   = {"test"},
+        .WHERE  = {"tAddr = 'Home'", "tName = 'hamza'"},
+        .GROUP  = {"tAddr"},
+        .HAVING = {"5 < AVG(tID)"},
+        .ORDER  = {{"tAddr", ASC}, {"tName", DESC}}
+    });
 
     return a.exec();
 }
