@@ -11,7 +11,11 @@
 #include <QStyledItemDelegate>
 
 #include <QPainter>
+#include <QPainterPath>
 #include <QStyledItemDelegate>
+
+#include <QtSql/QSqlDatabase>
+#include <QtSql/QSqlQueryModel>
 
 class CustomTableDelegate : public QStyledItemDelegate {
   public:
@@ -55,22 +59,40 @@ class CustomTableDelegate : public QStyledItemDelegate {
     }
 };
 
+// to use it: ui->tableWidget->setItem(row, column, new
+// LeftAlignedItem(value.toString()))
+class LeftAlignedItem : public QTableWidgetItem {
+  public:
+    LeftAlignedItem(const QString &text) : QTableWidgetItem(text) {
+        setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+    }
+};
+
 // Temporary Section --------------------------------------------
 struct Item {
     QString name;
     int     quantity;
     double  unitPrice;
+    QString x1;
 };
 
 QList<Item> items = {
-    {"Baguette",        2, 1.50 },
-    {"Chocolate Cake",  1, 12.00},
-    {"Croissant",       6, 0.90 },
-    {"Muffin",          4, 1.25 },
-    {"Sourdough Bread", 1, 3.75 },
-    {"Apple Pie",       1, 5.50 },
-    {"Cinnamon Roll",   3, 2.00 },
-    {"Donut",           5, 1.10 }
+    {"Baguette",        2, 1.50,  "kg" },
+    {"Chocolate Cake",  1, 12.00, "kg" },
+    {"Choissant",       6, 0.90,  "pcs"},
+    {"Muffin",          4, 1.25,  "kg" },
+    {"Sourdough Bread", 1, 3.75,  "pcs"},
+    {"Apple Pie",       1, 5.50,  "kg" },
+    {"Cinnamon Roll",   3, 2.00,  "pcs"},
+    {"Donut",           5, 1.10,  "kg" },
+    {"Donut",           5, 1.10,  "pcs"},
+    {"Donut",           5, 1.10,  "kg" },
+    {"Donut",           5, 1.10,  "kg" },
+    {"Donut",           5, 1.10,  "kg" },
+    {"Donut",           5, 1.10,  "kg" },
+    {"Donut",           5, 1.10,  "kg" },
+    {"Donut",           5, 1.10,  "kg" },
+    {"Donut",           5, 1.10,  "kg" },
 };
 //--------------------------------------------------------------
 
@@ -80,97 +102,143 @@ dashboard::dashboard(QWidget *parent)
 
     // Temporary Section
     // ------------------------------------------------------------
-    ui->XPageTableWidget->setRowCount(0); // clear any existing rows
-    ui->XPageTableWidget->setColumnCount(6);
-    ui->XPageTableWidget->setHorizontalHeaderLabels(
-        {"Product", "Quantity", "Unit Price", "Total", "", ""});
+    ui->ProductPageTableWidget->setRowCount(0); // clear any existing rows
+    ui->ProductPageTableWidget->setColumnCount(5);
+    ui->ProductPageTableWidget->setHorizontalHeaderLabels(
+        {"Product", "Stock Quantity", "Unit Price", "Unit", ""});
 
     for (const auto &item : items) {
-        int row = ui->XPageTableWidget->rowCount();
-        ui->XPageTableWidget->insertRow(row);
+        int row = ui->ProductPageTableWidget->rowCount();
+        ui->ProductPageTableWidget->insertRow(row);
 
-        double total = item.quantity * item.unitPrice;
-
-        QTableWidgetItem *nameItem = new QTableWidgetItem(item.name);
-        QTableWidgetItem *qtyItem =
-            new QTableWidgetItem(QString::number(item.quantity));
-        QTableWidgetItem *priceItem =
-            new QTableWidgetItem(QString::number(item.unitPrice, 'f', 2));
-        QTableWidgetItem *totalItem =
-            new QTableWidgetItem(QString::number(total, 'f', 2));
+        LeftAlignedItem *nameItem = new LeftAlignedItem(item.name);
+        LeftAlignedItem *qtyItem =
+            new LeftAlignedItem(QString::number(item.quantity));
+        LeftAlignedItem *priceItem =
+            new LeftAlignedItem(QString::number(item.unitPrice, 'f', 2));
+        // LeftAlignedItem *totalItem =
+        //     new LeftAlignedItem(QString::number(total, 'f', 2));
+        LeftAlignedItem *X1 = new LeftAlignedItem(item.x1);
 
         // Alignment & Read-Only
-        for (QTableWidgetItem *it : {nameItem, qtyItem, priceItem, totalItem}) {
+        for (LeftAlignedItem *it : {nameItem, qtyItem, priceItem, X1}) {
             it->setFlags(it->flags() & ~Qt::ItemIsEditable);
-            it->setTextAlignment(Qt::AlignCenter);
         }
 
-        ui->XPageTableWidget->setItem(row, 0, nameItem);
-        ui->XPageTableWidget->setItem(row, 1, qtyItem);
-        ui->XPageTableWidget->setItem(row, 2, priceItem);
-        ui->XPageTableWidget->setItem(row, 3, totalItem);
-
-        QPushButton *btn_Delete = new QPushButton();
-        QPushButton *btn_Edit   = new QPushButton();
-        btn_Delete->setObjectName("BTN");
-        btn_Delete->setStyleSheet("background-color: white; border: none;");
-        btn_Delete->setIcon(QIcon(":/icons/delete.png"));
-
-        btn_Edit->setObjectName("BTN_1");
-        btn_Edit->setStyleSheet("background-color: white; border: none;");
-        btn_Edit->setIcon(QIcon(":/icons/edit.png"));
-        ui->XPageTableWidget->setCellWidget(row, 4, btn_Delete);
-        ui->XPageTableWidget->setCellWidget(row, 5, btn_Edit);
-        ui->XPageTableWidget->setColumnWidth(4, 100);
-        ui->XPageTableWidget->setColumnWidth(5, 100);
+        ui->ProductPageTableWidget->setItem(row, 0, nameItem);
+        ui->ProductPageTableWidget->setItem(row, 1, qtyItem);
+        ui->ProductPageTableWidget->setItem(row, 2, priceItem);
+        ui->ProductPageTableWidget->setItem(row, 3, X1);
     }
 
-    QIcon    searchIcon(":/icons/search.png");
-    QAction *searchAction = new QAction(searchIcon, "", ui->SearchByXLineEdit);
-    ui->SearchByXLineEdit->addAction(searchAction, QLineEdit::LeadingPosition);
-
-    ui->XPageTableWidget->setItemDelegate(
-        new CustomTableDelegate(ui->XPageTableWidget));
-    ui->XPageTableWidget->setShowGrid(false);
-    ui->XPageTableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
-    ui->XPageTableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
-
-    // Temporary menu toggle button
-    QPushButton *menu_Btn = new QPushButton();
-    ui->TopBarHLayout->addWidget(menu_Btn);
-    connect(menu_Btn, &QPushButton::clicked, this, ToggleSideMenu);
-
-    // important section
-    sideMenuVisible = true;
-    //-----------------------------------------------------------------------------
+    SetupUI();
 }
 
 dashboard::~dashboard() { delete ui; }
 
-void dashboard::on_AddXButton_clicked() {
+void dashboard::AddDeleteAndEditButtonsToTableRows(QTableWidget *Table) {
+    int RowCount    = Table->rowCount();
+    int ColumnCount = Table->columnCount();
+
+    for (int Row = 0; Row < RowCount; Row++) {
+        // Create buttons
+        QPushButton *Btn_Delete = new QPushButton();
+        QPushButton *Btn_Edit   = new QPushButton();
+
+        // Set icons only (no text)
+        Btn_Delete->setIcon(QIcon(":/icons/delete.png"));
+        Btn_Edit->setIcon(QIcon(":/icons/edit.png"));
+
+        // Remove borders, background for flat icon look
+        Btn_Delete->setStyleSheet(
+            "QPushButton {background-color: transparent; border: none;} "
+            "QPushButton:hover {border: 1.5px solid #e30a17; border-radius: "
+            "4px;}");
+        Btn_Edit->setStyleSheet(
+            "QPushButton {background-color: transparent; border: none;} "
+            "QPushButton:hover {border: 1.5px solid #0096C7; border-radius: "
+            "4px;}");
+
+        Btn_Delete->setCursor(Qt::PointingHandCursor);
+        Btn_Edit->setCursor(Qt::PointingHandCursor);
+
+        // Create a widget to hold both buttons
+        QWidget     *ActionCellWidget = new QWidget();
+        QHBoxLayout *Layout           = new QHBoxLayout(ActionCellWidget);
+        Layout->setContentsMargins(0, 0, 0, 0); // No padding inside the cell
+        Layout->setSpacing(10);                 // Space between icons
+        Layout->addWidget(Btn_Edit);
+        Layout->addWidget(Btn_Delete);
+        Layout->setAlignment(Qt::AlignCenter);
+
+        // Set the widget to the last column
+        Table->setCellWidget(Row, ColumnCount - 1, ActionCellWidget);
+
+        // Optionally fix the width of the action column
+        Table->setColumnWidth(ColumnCount - 1, 120);
+    }
+}
+
+void dashboard::SetupUI() {
+
+    // painting the table
+    ui->ProductPageTableWidget->setItemDelegate(
+        new CustomTableDelegate(ui->ProductPageTableWidget));
+    ui->ProductPageTableWidget->setShowGrid(false);
+    ui->ProductPageTableWidget->setSelectionMode(
+        QAbstractItemView::SingleSelection);
+    ui->ProductPageTableWidget->setSelectionBehavior(
+        QAbstractItemView::SelectRows);
+
+    // Distribute columns based on content size
+    // ui->XPageTableWidget->horizontalHeader()->setSectionResizeMode(
+    //     QHeaderView::Stretch);
+
+    // left-align header text, vertically centered
+    ui->ProductPageTableWidget->horizontalHeader()->setDefaultAlignment(
+        Qt::AlignLeft | Qt::AlignVCenter);
+
+    // showing how many records are being shown out of total records
+    ui->NumberOfRecordsShownLabel->setText("Showing 1-10 of 100");
+    ui->NumberOfRecordsShownLabel->setStyleSheet("color: #1F1F1F;");
+
+    ui->ProductPageTableWidget->horizontalHeader()->setSectionResizeMode(
+        QHeaderView::Stretch);
+    ui->ProductPageTableWidget->horizontalHeader()->setSectionResizeMode(
+        4, QHeaderView::Fixed);
+    // ui->ProductPageTableWidget->horizontalHeader()->setSectionResizeMode(
+    //     0, QHeaderView::Stretch);
+    // ui->ProductPageTableWidget->horizontalHeader()->setSectionResizeMode(
+    //     1, QHeaderView::ResizeToContents);
+
+    // Setting table height according to row height
+    int RowHeight =
+        ui->ProductPageTableWidget->verticalHeader()->defaultSectionSize();
+    int TotalHeight = ui->ProductPageTableWidget->rowCount() * RowHeight +
+                      ui->ProductPageTableWidget->horizontalHeader()->height();
+    ui->ProductPageTableWidget->setMaximumHeight(TotalHeight);
+
+    // Adding svg to Side bar label
+    // QSvgRenderer SvgRenderer(QString(":/images/logo-color.svg"));
+    // QPixmap      Pixmap(64, 64);
+    // Pixmap.fill(Qt::transparent);
+    // QPainter Painter(&Pixmap);
+    // SvgRenderer.render(&Painter);
+    // ui->SideBarLogoLabel->setPixmap(Pixmap);
+
     ui->MainDisplayStackedWidget->setCurrentIndex(0);
+
+    AddDeleteAndEditButtonsToTableRows(ui->ProductPageTableWidget);
 }
 
-void dashboard::ToggleSideMenu() {
-    static const int sideMenuWidth = 239;
-    int              startWidth    = ui->SideBarWidget->width();
-    int              endWidth      = sideMenuVisible ? 0 : sideMenuWidth;
+void dashboard::FillTableWithData(
+    /*Some Data Structure holding the query result*/) {
+    /*Perform appropriate operation to fill table with data*/
 
-    QPropertyAnimation *animation =
-        new QPropertyAnimation(ui->SideBarWidget, "minimumWidth");
-    animation->setDuration(300); // 300 ms
-    animation->setStartValue(startWidth);
-    animation->setEndValue(endWidth);
-    animation->setEasingCurve(QEasingCurve::InOutCubic);
-    animation->start(QAbstractAnimation::DeleteWhenStopped);
-
-    QPropertyAnimation *animationMax =
-        new QPropertyAnimation(ui->SideBarWidget, "maximumWidth");
-    animationMax->setDuration(300);
-    animationMax->setStartValue(startWidth);
-    animationMax->setEndValue(endWidth);
-    animationMax->setEasingCurve(QEasingCurve::InOutCubic);
-    animationMax->start(QAbstractAnimation::DeleteWhenStopped);
-
-    sideMenuVisible = !sideMenuVisible;
+    // loop over the data structure
+    // insert row
+    // Make a new item for each column value for a specific row
+    // set ~Qt::IsItemEditable flag
+    // Set the item to the table cell
 }
+

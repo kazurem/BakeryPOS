@@ -11,5 +11,8 @@
         <file>icons/edit.png</file>
         <file>icons/search.png</file>
         <file>icons/menu.png</file>
+        <file>icons/arrow-left.png</file>
+        <file>icons/arrow-right.png</file>
+        <file>images/logo-color.svg</file>
     </qresource>
 </RCC>

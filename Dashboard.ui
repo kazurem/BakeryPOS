@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1354</width>
+    <width>1575</width>
     <height>750</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="minimumSize">
    <size>
@@ -18,6 +24,9 @@
   </property>
   <property name="windowTitle">
    <string>dashboard</string>
+  </property>
+  <property name="layoutDirection">
+   <enum>Qt::LayoutDirection::LeftToRight</enum>
   </property>
   <property name="styleSheet">
    <string notr="true">background-color: white;</string>
@@ -29,6 +38,7 @@ QPushButton {
 	color: black;
 	font-weight: bold;
 	font-size: 15px;
+ 	padding: 10px;
 
 	border-radius: 6.28px;
 	border: 1.82px solid #1F1F1F;
@@ -39,7 +49,7 @@ QPushButton {
 QPushButton:checked
 {
 	background-color: #0096C7;
-	border: 1.82px solid #E0E0E0;
+	border: 1.82px solid #1F1F1F;
 	color:white;
 }
 
@@ -58,40 +68,33 @@ QPushButton:checked
 	color: black;
 }
 
-#AddXButton
+#AddProductButton
 {
 	color:white;
 
-	padding:10px;
+	padding-left:15px;
+	padding-right:15px;
 
-	border-radius: 21.42px;
 	border: 1.82px solid #1F1F1F;
 
-	background-color: #0096C7;
+	background-color: #ADE8F4;
 }
 
-#FilterByXButton
+#AddProductButton:pressed
 {
-	color:black;
-
-	padding: 10px;
-
-	border-radius: 21.42px;
-	border: 1.82px solid #1F1F1F;
-
-	background-color: white;
+	background-color:#0096C7;
 }
 /*--------------------------------- Push Buttons (END)-------------------------------------*/
 
 
 /*--------------------------------- Line Edits (START)---------------------------------------*/
-#SearchByXLineEdit
+#SearchProductByNameLineEdit
 {
 	color: black;
 
 	padding: 10px;
 
-	border-radius: 21.42px;
+	border-radius: 6.28px;
 	border: 1.82px solid #1F1F1F;
 
 	background-color: white;
@@ -154,11 +157,45 @@ QTableWidget::item {
 }
 
 QTableWidget::item:selected {
-    color: #FF999B;
-
-	background-color: #D0F0FF;
+    color: black;
+	font-weight: bold;
+	background-color: #ADE8F4;
 }
 /*--------------------------------- Tables (END)-------------------------------------*/
+
+/*--------------------------------- ComboBox(START)-------------------------------*/
+QComboBox {
+    border: 1.82px solid #1F1F1F;
+    border-radius: 6.28px;
+	padding:10px;
+   	padding-left:15px;
+	padding-right:15px;
+
+    background-color: white;
+    font-weight: bold;
+    color: black;
+}
+
+QComboBox::drop-down {
+    border-left: 1.82px solid #1F1F1F;
+	color: black;
+    /*width: 20px;*/
+}
+
+QComboBox::down-arrow {
+    width: 12px;
+    height: 12px;
+}
+
+
+QComboBox QAbstractItemView {
+    background-color: white;
+    color: black;
+    selection-background-color: lightgray;
+    selection-color: black;
+    border: 1px solid black;
+}
+/*-------------------------------------------------ComboBox(END)---------------------------*/
 
 </string>
    </property>
@@ -180,10 +217,16 @@ QTableWidget::item:selected {
     </property>
     <item>
      <widget class="QWidget" name="SideBarWidget" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+        <horstretch>2</horstretch>
+        <verstretch>1</verstretch>
+       </sizepolicy>
+      </property>
       <property name="styleSheet">
        <string notr="true"/>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_2" stretch="10,25,20,5">
+      <layout class="QVBoxLayout" name="verticalLayout_2" stretch="10,0,26,45,5">
        <property name="spacing">
         <number>0</number>
        </property>
@@ -209,9 +252,22 @@ font-size: 30px;</string>
         </widget>
        </item>
        <item>
-        <layout class="QVBoxLayout" name="SideBarButtonsVLayout">
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Orientation::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="SideBarButtonsVLayout" stretch="0,0,0,0,0">
          <property name="spacing">
-          <number>5</number>
+          <number>20</number>
          </property>
          <item>
           <widget class="QPushButton" name="UsersButton">
@@ -221,8 +277,15 @@ font-size: 30px;</string>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
            <property name="text">
             <string>Users</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>:/icons/user.png</normaloff>:/icons/user.png</iconset>
            </property>
            <property name="checkable">
             <bool>true</bool>
@@ -240,8 +303,15 @@ font-size: 30px;</string>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
            <property name="text">
             <string>Analytics</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>:/icons/analytics.png</normaloff>:/icons/analytics.png</iconset>
            </property>
            <property name="checkable">
             <bool>true</bool>
@@ -259,8 +329,15 @@ font-size: 30px;</string>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
            <property name="text">
             <string>Categories</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>:/icons/category.png</normaloff>:/icons/category.png</iconset>
            </property>
            <property name="checkable">
             <bool>true</bool>
@@ -278,8 +355,15 @@ font-size: 30px;</string>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
            <property name="text">
             <string>Products</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>:/icons/products.png</normaloff>:/icons/products.png</iconset>
            </property>
            <property name="checkable">
             <bool>true</bool>
@@ -297,8 +381,15 @@ font-size: 30px;</string>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
            <property name="text">
             <string>Invoice</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>:/icons/invoice.png</normaloff>:/icons/invoice.png</iconset>
            </property>
            <property name="checkable">
             <bool>true</bool>
@@ -331,11 +422,18 @@ font-size: 30px;</string>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
          <property name="styleSheet">
           <string notr="true"/>
          </property>
          <property name="text">
           <string>Logout</string>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>:/icons/logout.png</normaloff>:/icons/logout.png</iconset>
          </property>
          <property name="checkable">
           <bool>true</bool>
@@ -350,126 +448,29 @@ font-size: 30px;</string>
     </item>
     <item>
      <widget class="QWidget" name="MainDisplayWidget" native="true">
-      <layout class="QVBoxLayout" name="verticalLayout_3">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0">
+       <property name="leftMargin">
+        <number>10</number>
+       </property>
+       <property name="rightMargin">
+        <number>20</number>
+       </property>
        <item>
         <widget class="QStackedWidget" name="MainDisplayStackedWidget">
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
-         <widget class="QWidget" name="AddXPage">
-          <layout class="QVBoxLayout" name="verticalLayout_7">
-           <item>
-            <widget class="QLabel" name="PageLabel">
-             <property name="text">
-              <string>Add X</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="AddImageSection">
-             <property name="text">
-              <string>TextLabel</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <layout class="QVBoxLayout" name="AddXPageDataEntryVLayout">
-             <item>
-              <layout class="QHBoxLayout" name="AddXPageDataEntryHLayout">
-               <item>
-                <layout class="QVBoxLayout" name="AddXPageDataEntryFirstHalfVLayout">
-                 <item>
-                  <widget class="QLabel" name="XAttribute1Label">
-                   <property name="text">
-                    <string>TextLabel</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="XAttribute1LineEdit"/>
-                 </item>
-                 <item>
-                  <widget class="QLabel" name="XAttribute2Label">
-                   <property name="text">
-                    <string>TextLabel</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="XAttribute2LineEdit"/>
-                 </item>
-                 <item>
-                  <widget class="QLabel" name="XAttribute3Label">
-                   <property name="text">
-                    <string>TextLabel</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="XAttribute3LineEdit"/>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <layout class="QVBoxLayout" name="AddXPageDataEntrySecondHalfVLayout">
-                 <item>
-                  <widget class="QLabel" name="XAttribute4Label">
-                   <property name="text">
-                    <string>TextLabel</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="XAttribute4LineEdit"/>
-                 </item>
-                 <item>
-                  <widget class="QLabel" name="XAttribute5Label">
-                   <property name="text">
-                    <string>TextLabel</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="XAttribute5LineEdit"/>
-                 </item>
-                 <item>
-                  <widget class="QLabel" name="XAttribute6Label">
-                   <property name="text">
-                    <string>TextLabel</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="XAttribute6LineEdit"/>
-                 </item>
-                </layout>
-               </item>
-              </layout>
-             </item>
-             <item>
-              <layout class="QHBoxLayout" name="AddXPageButtonsHLayout">
-               <item>
-                <widget class="QPushButton" name="DiscardButton">
-                 <property name="text">
-                  <string>PushButton</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="SaveButton">
-                 <property name="text">
-                  <string>PushButton</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </widget>
-         <widget class="QWidget" name="XPage">
-          <layout class="QVBoxLayout" name="verticalLayout">
+         <widget class="QWidget" name="ProductManagementPage">
+          <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0">
+           <property name="spacing">
+            <number>10</number>
+           </property>
            <property name="leftMargin">
             <number>0</number>
            </property>
@@ -494,14 +495,14 @@ font-size: 30px;</string>
               <number>20</number>
              </property>
              <item>
-              <widget class="QLabel" name="FormNameLabel">
+              <widget class="QLabel" name="ProductsFormNameLabel">
                <property name="styleSheet">
                 <string notr="true">font-size: 25px;
 color: black;
 font-weight: bold;</string>
                </property>
                <property name="text">
-                <string>ExampleForm</string>
+                <string>Products</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
@@ -509,7 +510,7 @@ font-weight: bold;</string>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="SearchByXLineEdit">
+              <widget class="QLineEdit" name="SearchProductByNameLineEdit">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -525,11 +526,14 @@ font-weight: bold;</string>
                <property name="styleSheet">
                 <string notr="true"/>
                </property>
+               <property name="text">
+                <string/>
+               </property>
                <property name="readOnly">
                 <bool>false</bool>
                </property>
                <property name="placeholderText">
-                <string>Search by X.....</string>
+                <string>Search by name.....</string>
                </property>
               </widget>
              </item>
@@ -547,35 +551,27 @@ font-weight: bold;</string>
               </spacer>
              </item>
              <item>
-              <widget class="QPushButton" name="FilterByXButton">
+              <widget class="QComboBox" name="FilterCategoryComboBox">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
-               <property name="font">
-                <font>
-                 <pointsize>-1</pointsize>
-                 <bold>true</bold>
-                </font>
-               </property>
-               <property name="styleSheet">
-                <string notr="true"/>
-               </property>
-               <property name="text">
-                <string>ExampleButton</string>
-               </property>
-               <property name="checkable">
-                <bool>true</bool>
-               </property>
-               <property name="flat">
-                <bool>true</bool>
-               </property>
+               <item>
+                <property name="text">
+                 <string>Sweets</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>General</string>
+                </property>
+               </item>
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="AddXButton">
+              <widget class="QPushButton" name="AddProductButton">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                  <horstretch>0</horstretch>
@@ -588,11 +584,18 @@ font-weight: bold;</string>
                  <bold>true</bold>
                 </font>
                </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
                <property name="styleSheet">
                 <string notr="true"/>
                </property>
                <property name="text">
-                <string>+ ExampleAdd</string>
+                <string>Add Product</string>
+               </property>
+               <property name="icon">
+                <iconset>
+                 <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
                </property>
                <property name="checkable">
                 <bool>true</bool>
@@ -605,7 +608,7 @@ font-weight: bold;</string>
             </layout>
            </item>
            <item>
-            <widget class="QTableWidget" name="XPageTableWidget">
+            <widget class="QTableWidget" name="ProductPageTableWidget">
              <property name="styleSheet">
               <string notr="true"/>
              </property>
@@ -631,7 +634,7 @@ font-weight: bold;</string>
               <bool>true</bool>
              </attribute>
              <attribute name="horizontalHeaderDefaultSectionSize">
-              <number>200</number>
+              <number>170</number>
              </attribute>
              <attribute name="horizontalHeaderStretchLastSection">
               <bool>true</bool>
@@ -640,7 +643,7 @@ font-weight: bold;</string>
               <bool>false</bool>
              </attribute>
              <attribute name="verticalHeaderDefaultSectionSize">
-              <number>70</number>
+              <number>54</number>
              </attribute>
              <attribute name="verticalHeaderHighlightSections">
               <bool>true</bool>
@@ -681,20 +684,25 @@ font-weight: bold;</string>
                <string>ExampleColumn5</string>
               </property>
              </column>
-             <column>
-              <property name="text">
-               <string>ExampleColumn6</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>ExampleColumn7</string>
-              </property>
-             </column>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="NumberOfRecordsShownLabel">
+             <property name="text">
+              <string/>
+             </property>
             </widget>
            </item>
           </layout>
          </widget>
+         <widget class="QWidget" name="AddProductsPage"/>
+         <widget class="QWidget" name="UpdateProductPage"/>
+         <widget class="QWidget" name="UserManagementPage"/>
+         <widget class="QWidget" name="AddUserPage"/>
+         <widget class="QWidget" name="UpdateUserPage"/>
+         <widget class="QWidget" name="CategoryManagementPage"/>
+         <widget class="QWidget" name="AddCategoryPage"/>
+         <widget class="QWidget" name="UpdateCategoryPage"/>
         </widget>
        </item>
       </layout>

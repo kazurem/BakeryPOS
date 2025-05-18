@@ -2,6 +2,7 @@
 #define DASHBOARD_H
 
 #include <QMainWindow>
+#include <QTableWidget>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -16,13 +17,13 @@ class dashboard : public QMainWindow
 public:
     dashboard(QWidget *parent = nullptr);
     ~dashboard();
+    void SetupUI();
+    void FillTableWithData(/*Some data structure holding the query result*/);
+    void AddDeleteAndEditButtonsToTableRows(QTableWidget *Table);
 
   private slots:
-    void on_AddXButton_clicked();
-    void ToggleSideMenu();
 
   private:
     Ui::dashboard *ui;
-    bool           sideMenuVisible;
 };
 #endif // DASHBOARD_H

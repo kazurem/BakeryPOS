@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) {
 
     // Making the dashboard
     dashboard w;
-    w.show();
+    w.showFullScreen();
 
     return App.exec();
 }
