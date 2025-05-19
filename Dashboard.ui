@@ -80,9 +80,49 @@ QPushButton:checked
 	background-color: #ADE8F4;
 }
 
-#AddProductButton:pressed
+#AddProductButton:hover
 {
-	background-color:#0096C7;
+	background-color: white;
+	border: 1.82px solid #1F1F1F;
+	color: black;
+}
+
+#DeleteProductButton
+{
+	color:white;
+
+	padding-left:15px;
+	padding-right:15px;
+
+	border: 1.82px solid #1F1F1F;
+
+	background-color: #e30a17;
+}
+
+#DeleteProductButton:hover
+{
+	background-color: white;
+	border: 1.82px solid #1F1F1F;
+	color: black;
+}
+
+#EditProductButton
+{
+	color:white;
+
+	padding-left:15px;
+	padding-right:15px;
+
+	border: 1.82px solid #1F1F1F;
+
+	background-color: #FFB74D;
+}
+
+#EditProductButton:hover
+{
+	background-color: white;
+	border: 1.82px solid #1F1F1F;
+	color: black;
 }
 /*--------------------------------- Push Buttons (END)-------------------------------------*/
 
@@ -118,6 +158,11 @@ QPushButton:checked
 
 	background-color: transparent;
 }
+
+#NumberOfRecordsShownLabel
+{
+	color: black;
+}
 /*--------------------------------- Labels (END)--------------------------------------*/
 
 
@@ -130,7 +175,7 @@ QPushButton:checked
 
 
 /*--------------------------------- Tables (START)-------------------------------------*/
-QTableWidget {
+QTableView {
 
     padding: 5px;
 
@@ -138,6 +183,7 @@ QTableWidget {
     border-radius: 5px;
 
     gridline-color: #EEE;
+	/*alternate-background-color: #f4f5f7;*/
 }
 
 QHeaderView::section {
@@ -150,13 +196,13 @@ font-weight: bold;
     background-color: white;
 }
 
-QTableWidget::item {
+QTableView::item {
 	color: black;
 
     padding: 5px;
 }
 
-QTableWidget::item:selected {
+QTableView::item:selected {
     color: black;
 	font-weight: bold;
 	background-color: #ADE8F4;
@@ -176,17 +222,19 @@ QComboBox {
     color: black;
 }
 
-QComboBox::drop-down {
-    border-left: 1.82px solid #1F1F1F;
-	color: black;
-    /*width: 20px;*/
-}
+
 
 QComboBox::down-arrow {
     width: 12px;
     height: 12px;
 }
 
+QComboBox::drop-down {
+    border-left: 1.82px solid #1F1F1F;
+	color: black;
+	image: url(:/icons/drop-down.svg);
+    width: 20px;
+}
 
 QComboBox QAbstractItemView {
     background-color: white;
@@ -196,7 +244,6 @@ QComboBox QAbstractItemView {
     border: 1px solid black;
 }
 /*-------------------------------------------------ComboBox(END)---------------------------*/
-
 </string>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="15,70">
@@ -284,8 +331,15 @@ font-size: 30px;</string>
             <string>Users</string>
            </property>
            <property name="icon">
-            <iconset>
-             <normaloff>:/icons/user.png</normaloff>:/icons/user.png</iconset>
+            <iconset resource="resources.qrc">
+             <normaloff>:/icons/user-black-30.svg</normaloff>
+             <normalon>:/icons/user-white-30.svg</normalon>
+             <disabledoff>:/icons/user-black-30.svg</disabledoff>
+             <disabledon>:/icons/user-black-30.svg</disabledon>
+             <activeoff>:/icons/user-black-30.svg</activeoff>
+             <activeon>:/icons/user-white-30.svg</activeon>
+             <selectedoff>:/icons/user-black-30.svg</selectedoff>
+             <selectedon>:/icons/user-black-30.svg</selectedon>:/icons/user-black-30.svg</iconset>
            </property>
            <property name="checkable">
             <bool>true</bool>
@@ -310,8 +364,9 @@ font-size: 30px;</string>
             <string>Analytics</string>
            </property>
            <property name="icon">
-            <iconset>
-             <normaloff>:/icons/analytics.png</normaloff>:/icons/analytics.png</iconset>
+            <iconset resource="resources.qrc">
+             <normaloff>:/icons/analytics-black-30.svg</normaloff>
+             <activeon>:/icons/analytics-white-30.svg</activeon>:/icons/analytics-black-30.svg</iconset>
            </property>
            <property name="checkable">
             <bool>true</bool>
@@ -336,8 +391,9 @@ font-size: 30px;</string>
             <string>Categories</string>
            </property>
            <property name="icon">
-            <iconset>
-             <normaloff>:/icons/category.png</normaloff>:/icons/category.png</iconset>
+            <iconset resource="resources.qrc">
+             <normaloff>:/icons/category-black-30.svg</normaloff>
+             <activeon>:/icons/category-white-30.svg</activeon>:/icons/category-black-30.svg</iconset>
            </property>
            <property name="checkable">
             <bool>true</bool>
@@ -362,10 +418,14 @@ font-size: 30px;</string>
             <string>Products</string>
            </property>
            <property name="icon">
-            <iconset>
-             <normaloff>:/icons/products.png</normaloff>:/icons/products.png</iconset>
+            <iconset resource="resources.qrc">
+             <normaloff>:/icons/product-black-30.svg</normaloff>
+             <activeon>:/icons/product-white-30.svg</activeon>:/icons/product-black-30.svg</iconset>
            </property>
            <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <property name="checked">
             <bool>true</bool>
            </property>
            <property name="flat">
@@ -388,8 +448,9 @@ font-size: 30px;</string>
             <string>Invoice</string>
            </property>
            <property name="icon">
-            <iconset>
-             <normaloff>:/icons/invoice.png</normaloff>:/icons/invoice.png</iconset>
+            <iconset resource="resources.qrc">
+             <normaloff>:/icons/invoice-black-30.svg</normaloff>
+             <activeon>:/icons/invoice-white-30.svg</activeon>:/icons/invoice-black-30.svg</iconset>
            </property>
            <property name="checkable">
             <bool>true</bool>
@@ -426,14 +487,15 @@ font-size: 30px;</string>
           <cursorShape>PointingHandCursor</cursorShape>
          </property>
          <property name="styleSheet">
-          <string notr="true"/>
+          <string notr="true">
+</string>
          </property>
          <property name="text">
           <string>Logout</string>
          </property>
          <property name="icon">
-          <iconset>
-           <normaloff>:/icons/logout.png</normaloff>:/icons/logout.png</iconset>
+          <iconset resource="resources.qrc">
+           <normaloff>:/icons/logout-white-30.svg</normaloff>:/icons/logout-white-30.svg</iconset>
          </property>
          <property name="checkable">
           <bool>true</bool>
@@ -484,7 +546,7 @@ font-size: 30px;</string>
             <number>0</number>
            </property>
            <item>
-            <layout class="QHBoxLayout" name="TopBarHLayout" stretch="0,0,0,0,0">
+            <layout class="QHBoxLayout" name="TopBarHLayout" stretch="0,0,0,0,0,0,0">
              <property name="spacing">
               <number>20</number>
              </property>
@@ -558,9 +620,22 @@ font-weight: bold;</string>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
                <item>
                 <property name="text">
-                 <string>Sweets</string>
+                 <string>All</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Bakery</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Sweet</string>
                 </property>
                </item>
                <item>
@@ -568,6 +643,46 @@ font-weight: bold;</string>
                  <string>General</string>
                 </property>
                </item>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="EditProductButton">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="text">
+                <string>Edit Product</string>
+               </property>
+               <property name="icon">
+                <iconset resource="resources.qrc">
+                 <normaloff>:/icons/edit-white-30.svg</normaloff>:/icons/edit-white-30.svg</iconset>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="DeleteProductButton">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="text">
+                <string>Delete Product</string>
+               </property>
+               <property name="icon">
+                <iconset resource="resources.qrc">
+                 <normaloff>:/icons/delete-white-30.svg</normaloff>:/icons/delete-white-30.svg</iconset>
+               </property>
               </widget>
              </item>
              <item>
@@ -594,8 +709,8 @@ font-weight: bold;</string>
                 <string>Add Product</string>
                </property>
                <property name="icon">
-                <iconset>
-                 <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
+                <iconset resource="resources.qrc">
+                 <normaloff>:/icons/add-white-30.svg</normaloff>:/icons/add-white-30.svg</iconset>
                </property>
                <property name="checkable">
                 <bool>true</bool>
@@ -608,11 +723,17 @@ font-weight: bold;</string>
             </layout>
            </item>
            <item>
-            <widget class="QTableWidget" name="ProductPageTableWidget">
+            <widget class="QTableView" name="ProductPageTableView">
+             <property name="cursor" stdset="0">
+              <cursorShape>ArrowCursor</cursorShape>
+             </property>
              <property name="styleSheet">
               <string notr="true"/>
              </property>
              <property name="verticalScrollBarPolicy">
+              <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
+             </property>
+             <property name="horizontalScrollBarPolicy">
               <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
              </property>
              <property name="alternatingRowColors">
@@ -630,60 +751,12 @@ font-weight: bold;</string>
              <property name="sortingEnabled">
               <bool>true</bool>
              </property>
-             <attribute name="horizontalHeaderCascadingSectionResizes">
-              <bool>true</bool>
-             </attribute>
-             <attribute name="horizontalHeaderDefaultSectionSize">
-              <number>170</number>
-             </attribute>
-             <attribute name="horizontalHeaderStretchLastSection">
-              <bool>true</bool>
-             </attribute>
              <attribute name="verticalHeaderVisible">
               <bool>false</bool>
              </attribute>
              <attribute name="verticalHeaderDefaultSectionSize">
-              <number>54</number>
+              <number>50</number>
              </attribute>
-             <attribute name="verticalHeaderHighlightSections">
-              <bool>true</bool>
-             </attribute>
-             <attribute name="verticalHeaderShowSortIndicator" stdset="0">
-              <bool>true</bool>
-             </attribute>
-             <attribute name="verticalHeaderStretchLastSection">
-              <bool>false</bool>
-             </attribute>
-             <column>
-              <property name="text">
-               <string>ExampleID</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>ExampleColumn1</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>ExampleColumn2</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>ExampleColumn3</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>ExampleColumn4</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>ExampleColumn5</string>
-              </property>
-             </column>
             </widget>
            </item>
            <item>
@@ -711,6 +784,8 @@ font-weight: bold;</string>
    </layout>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>
