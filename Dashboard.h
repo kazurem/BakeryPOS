@@ -18,21 +18,35 @@ public:
   dashboard(QWidget *parent = nullptr);
   ~dashboard();
   void SetupUI();
-  void ApplyFilters(const QString &sortColumn, const QString &sortOrder);
-  void ApplyFilters();
-  void UpdateRecordCountLabel();
+  void ApplyFiltersForProducts(const QString &sortColumn,
+                               const QString &sortOrder);
+  void ApplyFiltersForUsers(const QString &SortColumn,
+                            const QString &SortOrder);
+  void ApplyFiltersForProducts();
+  void ApplyFiltersForUsers();
+  void UpdateProductRecordCountLabel();
+  void UpdateUserRecordCountLabel();
 
 private slots:
   void onEditButtonClicked();
   void on_FilterCategoryComboBox_currentIndexChanged();
   void on_SearchProductByNameLineEdit_returnPressed();
-  void OnHeaderSectionClicked(int LogicalIndex);
+  void OnProductHeaderSectionClicked(int LogicalIndex);
+  void OnUserHeaderSectionClicked(int LogicalIndex);
 
   void on_EditProductButton_clicked();
 
   void on_DeleteProductButton_clicked();
 
   void on_AddProductButton_clicked();
+
+  void on_FilterRoleComboBox_currentIndexChanged();
+
+  void on_UsersButton_clicked();
+
+  void on_ProductsButton_clicked();
+
+  void on_SearchUserByNameLineEdit_returnPressed();
 
 private:
   Ui::dashboard  *ui;

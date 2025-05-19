@@ -27,7 +27,7 @@ dashboard::dashboard(QWidget *parent)
     this->BaseQuery = "SELECT * FROM products";
     Model->setQuery(BaseQuery);
     ui->ProductPageTableView->setModel(Model);
-    UpdateRecordCountLabel();
+    UpdateProductRecordCountLabel();
 
     SetupUI();
 }
@@ -37,15 +37,23 @@ dashboard::~dashboard() { delete ui; }
 void dashboard::SetupUI() {
 
     // painting the table
+
     ui->ProductPageTableView->setItemDelegate(
+        new CustomTableDelegate(ui->ProductPageTableView));
+    ui->UserPageTableView->setItemDelegate(
         new CustomTableDelegate(ui->ProductPageTableView));
 
     // Distribute columns based on content size
     ui->ProductPageTableView->horizontalHeader()->setSectionResizeMode(
         QHeaderView::Stretch);
-
     // left-align header text, vertically centered
     ui->ProductPageTableView->horizontalHeader()->setDefaultAlignment(
+        Qt::AlignLeft | Qt::AlignVCenter);
+    // Distribute columns based on content size
+    ui->UserPageTableView->horizontalHeader()->setSectionResizeMode(
+        QHeaderView::Stretch);
+    // left-align header text, vertically centered
+    ui->UserPageTableView->horizontalHeader()->setDefaultAlignment(
         Qt::AlignLeft | Qt::AlignVCenter);
 
     QButtonGroup *SidebarGroup = new QButtonGroup(this);
@@ -61,7 +69,10 @@ void dashboard::SetupUI() {
             &dashboard::onEditButtonClicked);
     connect(ui->ProductPageTableView->horizontalHeader(),
             &QHeaderView::sectionClicked, this,
-            &dashboard::OnHeaderSectionClicked);
+            &dashboard::OnProductHeaderSectionClicked);
+    connect(ui->UserPageTableView->horizontalHeader(),
+            &QHeaderView::sectionClicked, this,
+            &dashboard::OnUserHeaderSectionClicked);
     ui->MainDisplayStackedWidget->setCurrentIndex(0);
 }
 
@@ -85,8 +96,8 @@ void dashboard::onEditButtonClicked() {
     }
 }
 
-void dashboard::ApplyFilters(const QString &SortColumn,
-                             const QString &SortOrder) {
+void dashboard::ApplyFiltersForProducts(const QString &SortColumn,
+                                        const QString &SortOrder) {
     QString     Query = BaseQuery;
     QStringList Conditions;
 
@@ -109,22 +120,50 @@ void dashboard::ApplyFilters(const QString &SortColumn,
 
     qDebug() << "Final query:" << Query;
     Model->setQuery(Query);
-    UpdateRecordCountLabel();
+    UpdateProductRecordCountLabel();
 }
 
-void dashboard::ApplyFilters() { ApplyFilters("", ""); }
+void dashboard::ApplyFiltersForUsers(const QString &SortColumn,
+                                     const QString &SortOrder) {
+    QString     Query = BaseQuery;
+    QStringList Conditions;
+
+    if (!CurrentCategoryFilter.isEmpty() && CurrentCategoryFilter != "All") {
+        Conditions << QString("Role = '%1'").arg(CurrentCategoryFilter);
+    }
+
+    if (!CurrentSearchFilter.isEmpty()) {
+        Conditions << QString("username LIKE '%1%'").arg(CurrentSearchFilter);
+    }
+
+    if (!Conditions.isEmpty()) {
+        Query += " WHERE " + Conditions.join(" AND ");
+    }
+
+    // Add ORDER BY if sorting is specified
+    if (!SortColumn.isEmpty()) {
+        Query += QString(" ORDER BY `%1` %2").arg(SortColumn, SortOrder);
+    }
+
+    qDebug() << "Final query:" << Query;
+    Model->setQuery(Query);
+    UpdateUserRecordCountLabel();
+}
+
+void dashboard::ApplyFiltersForProducts() { ApplyFiltersForProducts("", ""); }
+void dashboard::ApplyFiltersForUsers() { ApplyFiltersForUsers("", ""); }
 
 void dashboard::on_FilterCategoryComboBox_currentIndexChanged() {
     CurrentCategoryFilter = ui->FilterCategoryComboBox->currentText();
-    ApplyFilters();
+    ApplyFiltersForProducts();
 }
 
 void dashboard::on_SearchProductByNameLineEdit_returnPressed() {
     CurrentSearchFilter = ui->SearchProductByNameLineEdit->text();
-    ApplyFilters();
+    ApplyFiltersForProducts();
 }
 
-void dashboard::OnHeaderSectionClicked(int LogicalIndex) {
+void dashboard::OnProductHeaderSectionClicked(int LogicalIndex) {
     static int  LastSortedColumn = -1;
     static bool Ascending        = true;
 
@@ -142,13 +181,39 @@ void dashboard::OnHeaderSectionClicked(int LogicalIndex) {
     QString Order = Ascending ? "ASC" : "DESC";
 
     // Now apply both filtering and sorting
-    ApplyFilters(ColumnName, Order);
-
-    UpdateRecordCountLabel();
+    ApplyFiltersForProducts(ColumnName, Order);
+    UpdateProductRecordCountLabel();
 }
 
-void dashboard::UpdateRecordCountLabel() {
-    ui->NumberOfRecordsShownLabel->setText(
+void dashboard::OnUserHeaderSectionClicked(int LogicalIndex) {
+    static int  LastSortedColumn = -1;
+    static bool Ascending        = true;
+
+    QString ColumnName =
+        Model->headerData(LogicalIndex, Qt::Horizontal).toString();
+    ColumnName = ColumnName.trimmed().replace(" ", "_");
+
+    if (LastSortedColumn == LogicalIndex) {
+        Ascending = !Ascending;
+    } else {
+        Ascending        = true;
+        LastSortedColumn = LogicalIndex;
+    }
+
+    QString Order = Ascending ? "ASC" : "DESC";
+
+    // Now apply both filtering and sorting
+    ApplyFiltersForUsers(ColumnName, Order);
+    UpdateProductRecordCountLabel();
+}
+
+void dashboard::UpdateProductRecordCountLabel() {
+    ui->NumberOfProductRecordsShownLabel->setText(
+        QString("Showing %1 records").arg(Model->rowCount()));
+}
+
+void dashboard::UpdateUserRecordCountLabel() {
+    ui->NumberOfUserRecordsShownLabel->setText(
         QString("Showing %1 records").arg(Model->rowCount()));
 }
 
@@ -162,4 +227,29 @@ void dashboard::on_DeleteProductButton_clicked() {
 
 void dashboard::on_AddProductButton_clicked() {
     // Create a Add product window
+}
+
+void dashboard::on_FilterRoleComboBox_currentIndexChanged() {
+    CurrentCategoryFilter = ui->FilterRoleComboBox->currentText();
+    ApplyFiltersForUsers();
+}
+
+void dashboard::on_UsersButton_clicked() {
+    ui->MainDisplayStackedWidget->setCurrentIndex(3);
+    this->BaseQuery = "SELECT * FROM users";
+    this->Model->setQuery(BaseQuery);
+    ui->UserPageTableView->setModel(Model);
+    UpdateUserRecordCountLabel();
+}
+
+void dashboard::on_ProductsButton_clicked() {
+    ui->MainDisplayStackedWidget->setCurrentIndex(0);
+    this->BaseQuery = "SELECT * FROM products";
+    this->Model->setQuery(BaseQuery);
+    ui->ProductPageTableView->setModel(Model);
+}
+
+void dashboard::on_SearchUserByNameLineEdit_returnPressed() {
+    CurrentSearchFilter = ui->SearchUserByNameLineEdit->text();
+    ApplyFiltersForUsers();
 }
