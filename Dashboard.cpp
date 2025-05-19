@@ -253,3 +253,7 @@ void dashboard::on_SearchUserByNameLineEdit_returnPressed() {
     CurrentSearchFilter = ui->SearchUserByNameLineEdit->text();
     ApplyFiltersForUsers();
 }
+
+void dashboard::on_CategoriesButton_clicked() {
+    ui->MainDisplayStackedWidget->setCurrentIndex(6);
+}

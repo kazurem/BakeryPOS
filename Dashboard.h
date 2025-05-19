@@ -48,6 +48,8 @@ private slots:
 
   void on_SearchUserByNameLineEdit_returnPressed();
 
+  void on_CategoriesButton_clicked();
+
 private:
   Ui::dashboard  *ui;
   QString         BaseQuery;
