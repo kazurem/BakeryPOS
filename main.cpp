@@ -1,4 +1,5 @@
-#include "Dashboard.h"
+#include "login.h"
+
 #include <QApplication>
 #include <QFontDatabase>
 
@@ -14,8 +15,8 @@ int main(int argc, char *argv[]) {
 
     App.setFont(AppFont);
 
-    // Making the dashboard
-    dashboard w;
+    // Making the login form
+    login w;
     w.showFullScreen();
 
     return App.exec();
