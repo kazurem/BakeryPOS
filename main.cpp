@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
 
     // Making the login form
     login w;
-    w.showFullScreen();
+    w.show();
 
     return App.exec();
 }

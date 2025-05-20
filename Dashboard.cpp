@@ -2,6 +2,7 @@
 #include "ui_Dashboard.h"
 
 #include "Utils.h"
+#include <login.h>
 
 #include <QSqlDatabase>
 #include <QSqlQueryModel>
@@ -256,4 +257,14 @@ void dashboard::on_SearchUserByNameLineEdit_returnPressed() {
 
 void dashboard::on_CategoriesButton_clicked() {
     ui->MainDisplayStackedWidget->setCurrentIndex(6);
+}
+
+void dashboard::on_LogoutButton_clicked() {
+    if (QMessageBox::question(this, "Confirm Logout",
+                              "Are you sure you want to logout?") ==
+        QMessageBox::Yes) {
+        this->close();
+        login *Lgn = new login();
+        Lgn->show();
+    }
 }

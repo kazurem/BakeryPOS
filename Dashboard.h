@@ -50,11 +50,14 @@ private slots:
 
   void on_CategoriesButton_clicked();
 
+  void on_LogoutButton_clicked();
+
 private:
   Ui::dashboard  *ui;
   QString         BaseQuery;
   QSqlQueryModel *Model;
   QString         CurrentCategoryFilter;
   QString         CurrentSearchFilter;
+  QSqlDatabase    db;
 };
 #endif // DASHBOARD_H

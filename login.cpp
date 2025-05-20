@@ -33,7 +33,7 @@ void login::on_btnLogin_clicked()
 
     if (username == "khalid" && password == "1234") {
         dashboard *dash = new dashboard(this);  // Lowercase 'dashboard'
-        dash->show();
+        dash->showFullScreen();
         this->hide();
     } else {
         QMessageBox::warning(this, "Login Failed", "Invalid username or password.");
