@@ -8,6 +8,7 @@ login::login(QWidget *parent)
     , ui(new Ui::login)
 {
     ui->setupUi(this);
+    this->setFixedSize(400, 540);
 }
 
 login::~login()
