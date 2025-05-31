@@ -9,6 +9,7 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    EditProductForm.cpp \
     login.cpp \
     Dashboard.cpp \
     Utils.cpp \
@@ -16,11 +17,13 @@ SOURCES += \
 
 HEADERS += \
     Dashboard.h \
+    EditProductForm.h \
     Utils.h \
     login.h
 
 FORMS += \
     Dashboard.ui \
+    EditProductForm.ui \
     login.ui
 
 # Default rules for deployment.

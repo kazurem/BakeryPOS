@@ -3,7 +3,6 @@
 
 #include <QMainWindow>
 #include <QSqlQueryModel>
-#include <QTableWidget>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -14,50 +13,43 @@ QT_END_NAMESPACE
 class dashboard : public QMainWindow {
     Q_OBJECT
 
-public:
-  dashboard(QWidget *parent = nullptr);
-  ~dashboard();
-  void SetupUI();
-  void ApplyFiltersForProducts(const QString &sortColumn,
-                               const QString &sortOrder);
-  void ApplyFiltersForUsers(const QString &SortColumn,
-                            const QString &SortOrder);
-  void ApplyFiltersForProducts();
-  void ApplyFiltersForUsers();
-  void UpdateProductRecordCountLabel();
-  void UpdateUserRecordCountLabel();
+  public:
+    dashboard(QWidget *parent = nullptr);
+    ~dashboard();
 
-private slots:
-  void onEditButtonClicked();
-  void on_FilterCategoryComboBox_currentIndexChanged();
-  void on_SearchProductByNameLineEdit_returnPressed();
-  void OnProductHeaderSectionClicked(int LogicalIndex);
-  void OnUserHeaderSectionClicked(int LogicalIndex);
+  private slots:
+    void on_FilterCategoryComboBox_currentIndexChanged();
+    void on_SearchProductByNameLineEdit_returnPressed();
+    void on_EditProductButton_clicked();
+    void on_DeleteProductButton_clicked();
+    void on_AddProductButton_clicked();
+    void on_FilterRoleComboBox_currentIndexChanged();
+    void on_UsersButton_clicked();
+    void on_ProductsButton_clicked();
+    void on_SearchUserByNameLineEdit_returnPressed();
+    void on_CategoriesButton_clicked();
+    void on_LogoutButton_clicked();
 
-  void on_EditProductButton_clicked();
+    void OnProductHeaderSectionClicked(int LogicalIndex);
+    void OnUserHeaderSectionClicked(int LogicalIndex);
+    void refreshProductData(); // Add this slot
 
-  void on_DeleteProductButton_clicked();
+  private:
+    Ui::dashboard  *ui;
+    QSqlQueryModel *Model;
+    QString         BaseQuery;
+    QString         CurrentCategoryFilter;
+    QString         CurrentSearchFilter;
 
-  void on_AddProductButton_clicked();
-
-  void on_FilterRoleComboBox_currentIndexChanged();
-
-  void on_UsersButton_clicked();
-
-  void on_ProductsButton_clicked();
-
-  void on_SearchUserByNameLineEdit_returnPressed();
-
-  void on_CategoriesButton_clicked();
-
-  void on_LogoutButton_clicked();
-
-private:
-  Ui::dashboard  *ui;
-  QString         BaseQuery;
-  QSqlQueryModel *Model;
-  QString         CurrentCategoryFilter;
-  QString         CurrentSearchFilter;
-  QSqlDatabase    db;
+    void SetupUI();
+    void ApplyFiltersForProducts(const QString &SortColumn,
+                                 const QString &SortOrder);
+    void ApplyFiltersForUsers(const QString &SortColumn,
+                              const QString &SortOrder);
+    void ApplyFiltersForProducts();
+    void ApplyFiltersForUsers();
+    void UpdateProductRecordCountLabel();
+    void UpdateUserRecordCountLabel();
 };
+
 #endif // DASHBOARD_H

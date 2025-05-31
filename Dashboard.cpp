@@ -1,4 +1,5 @@
 #include "Dashboard.h"
+#include "EditProductForm.h" // Add this include
 #include "ui_Dashboard.h"
 
 #include "Utils.h"
@@ -66,8 +67,9 @@ void dashboard::SetupUI() {
     SidebarGroup->addButton(ui->CategoriesButton);
     SidebarGroup->addButton(ui->AnalyticsButton);
 
-    connect(ui->EditProductButton, &QPushButton::clicked, this,
-            &dashboard::onEditButtonClicked);
+    // Remove this line - using auto-connection instead
+    // connect(ui->EditProductButton, &QPushButton::clicked, this,
+    //         &dashboard::onEditButtonClicked);
     connect(ui->ProductPageTableView->horizontalHeader(),
             &QHeaderView::sectionClicked, this,
             &dashboard::OnProductHeaderSectionClicked);
@@ -77,24 +79,13 @@ void dashboard::SetupUI() {
     ui->MainDisplayStackedWidget->setCurrentIndex(0);
 }
 
-void dashboard::onEditButtonClicked() {
-    QModelIndexList selectedIndexes =
-        ui->ProductPageTableView->selectionModel()->selectedRows();
+// Removed onEditButtonClicked() method - using on_EditProductButton_clicked()
+// instead
 
-    if (!selectedIndexes.isEmpty()) {
-        int selectedRow = selectedIndexes.first().row();
-
-        QModelIndex index = ui->ProductPageTableView->model()->index(
-            selectedRow, 1); // column 1 = Name
-        QVariant data = ui->ProductPageTableView->model()->data(index);
-        qDebug() << "Selected row:" << selectedRow + 1;
-        qDebug() << "Product Name:" << data.toString();
-
-        // You can now use this data to pre-fill your edit form or sidebar
-    } else {
-        QMessageBox::warning(this, "No Selection",
-                             "Please select a product to edit.");
-    }
+void dashboard::refreshProductData() {
+    // Refresh the product data in the table
+    ApplyFiltersForProducts();
+    qDebug() << "Product data refreshed after edit";
 }
 
 void dashboard::ApplyFiltersForProducts(const QString &SortColumn,
@@ -219,15 +210,99 @@ void dashboard::UpdateUserRecordCountLabel() {
 }
 
 void dashboard::on_EditProductButton_clicked() {
-    // Create a edit product window
+    QModelIndexList selectedIndexes =
+        ui->ProductPageTableView->selectionModel()->selectedRows();
+
+    if (!selectedIndexes.isEmpty()) {
+        int selectedRow = selectedIndexes.first().row();
+
+        // Get ProductID from the first column (assuming ProductID is in column
+        // 0)
+        QModelIndex productIdIndex =
+            ui->ProductPageTableView->model()->index(selectedRow, 0);
+        int productId =
+            ui->ProductPageTableView->model()->data(productIdIndex).toInt();
+
+        // Get Product Name for confirmation
+        QModelIndex nameIndex = ui->ProductPageTableView->model()->index(
+            selectedRow, 1); // column 1 = Name
+        QString productName =
+            ui->ProductPageTableView->model()->data(nameIndex).toString();
+
+        qDebug() << "Selected Product ID:" << productId;
+        qDebug() << "Product Name:" << productName;
+
+        // Create and show the edit form
+        EditProductForm *editForm = new EditProductForm(this);
+        editForm->loadProductData(productId);
+
+        // Connect the productUpdated signal to refresh the table
+        connect(editForm, &EditProductForm::productUpdated, this,
+                &dashboard::refreshProductData);
+
+        editForm->show();
+
+    } else {
+        QMessageBox::warning(this, "No Selection",
+                             "Please select a product to edit.");
+    }
 }
 
 void dashboard::on_DeleteProductButton_clicked() {
-    // Create a delete confirmation window
+    QModelIndexList selectedIndexes =
+        ui->ProductPageTableView->selectionModel()->selectedRows();
+
+    if (!selectedIndexes.isEmpty()) {
+        int selectedRow = selectedIndexes.first().row();
+
+        // Get ProductID and Name
+        QModelIndex productIdIndex =
+            ui->ProductPageTableView->model()->index(selectedRow, 0);
+        int productId =
+            ui->ProductPageTableView->model()->data(productIdIndex).toInt();
+
+        QModelIndex nameIndex =
+            ui->ProductPageTableView->model()->index(selectedRow, 1);
+        QString productName =
+            ui->ProductPageTableView->model()->data(nameIndex).toString();
+
+        // Confirm deletion
+        if (QMessageBox::question(
+                this, "Confirm Delete",
+                QString("Are you sure you want to delete product '%1'?")
+                    .arg(productName),
+                QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes) {
+
+            QSqlQuery query;
+            query.prepare("DELETE FROM products WHERE ProductID = ?");
+            query.bindValue(0, productId);
+
+            if (query.exec()) {
+                QMessageBox::information(this, "Success",
+                                         "Product deleted successfully!");
+                refreshProductData();
+            } else {
+                QMessageBox::critical(this, "Error",
+                                      "Failed to delete product: " +
+                                          query.lastError().text());
+            }
+        }
+    } else {
+        QMessageBox::warning(this, "No Selection",
+                             "Please select a product to delete.");
+    }
 }
 
 void dashboard::on_AddProductButton_clicked() {
-    // Create a Add product window
+    // Create a new EditProductForm for adding (without loading existing data)
+    EditProductForm *addForm = new EditProductForm(this);
+    addForm->setWindowTitle("Add New Product");
+
+    // Connect the productUpdated signal to refresh the table
+    connect(addForm, &EditProductForm::productUpdated, this,
+            &dashboard::refreshProductData);
+
+    addForm->show();
 }
 
 void dashboard::on_FilterRoleComboBox_currentIndexChanged() {
