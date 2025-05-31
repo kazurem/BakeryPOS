@@ -255,41 +255,120 @@ void dashboard::on_DeleteProductButton_clicked() {
     if (!selectedIndexes.isEmpty()) {
         int selectedRow = selectedIndexes.first().row();
 
-        // Get ProductID and Name
+        // Get ProductID
         QModelIndex productIdIndex =
             ui->ProductPageTableView->model()->index(selectedRow, 0);
         int productId =
             ui->ProductPageTableView->model()->data(productIdIndex).toInt();
 
-        QModelIndex nameIndex =
-            ui->ProductPageTableView->model()->index(selectedRow, 1);
-        QString productName =
-            ui->ProductPageTableView->model()->data(nameIndex).toString();
+        // Get detailed product information from database
+        QSqlQuery query;
+        query.prepare("SELECT ProductID, Name, Category, PricePerKg, "
+                      "PricePerUnit, StockQuantity, UnitType, date_added, "
+                      "status FROM products WHERE ProductID = ?");
+        query.bindValue(0, productId);
 
-        // Confirm deletion
-        if (QMessageBox::question(
-                this, "Confirm Delete",
-                QString("Are you sure you want to delete product '%1'?")
-                    .arg(productName),
-                QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes) {
+        if (query.exec() && query.next()) {
+            // Extract all product details
+            QString  productName   = query.value("Name").toString();
+            QString  category      = query.value("Category").toString();
+            QVariant pricePerKg    = query.value("PricePerKg");
+            QVariant pricePerUnit  = query.value("PricePerUnit");
+            double   stockQuantity = query.value("StockQuantity").toDouble();
+            QString  unitType      = query.value("UnitType").toString();
+            QString  dateAdded     = query.value("date_added").toString();
+            QString  status        = query.value("status").toString();
 
-            QSqlQuery query;
-            query.prepare("DELETE FROM products WHERE ProductID = ?");
-            query.bindValue(0, productId);
-
-            if (query.exec()) {
-                QMessageBox::information(this, "Success",
-                                         "Product deleted successfully!");
-                refreshProductData();
+            // Format pricing information
+            QString priceInfo;
+            if (!pricePerKg.isNull() && !pricePerUnit.isNull()) {
+                priceInfo = QString("Price per KG: $%1\nPrice per Unit: $%2")
+                                .arg(pricePerKg.toDouble(), 0, 'f', 2)
+                                .arg(pricePerUnit.toDouble(), 0, 'f', 2);
+            } else if (!pricePerKg.isNull()) {
+                priceInfo = QString("Price per KG: $%1")
+                                .arg(pricePerKg.toDouble(), 0, 'f', 2);
+            } else if (!pricePerUnit.isNull()) {
+                priceInfo = QString("Price per Unit: $%1")
+                                .arg(pricePerUnit.toDouble(), 0, 'f', 2);
             } else {
-                QMessageBox::critical(this, "Error",
-                                      "Failed to delete product: " +
-                                          query.lastError().text());
+                priceInfo = "No pricing information available";
             }
+
+            // Create detailed confirmation message
+            QString detailedMessage =
+                QString(
+                    "You are about to delete the following product:\n\n"
+                    "Product ID: %1\n"
+                    "Name: %2\n"
+                    "Category: %3\n"
+                    "%4\n"
+                    "Stock Quantity: %5 %6\n"
+                    "Status: %7\n"
+                    "Date Added: %8\n\n"
+                    "⚠️ WARNING: This action cannot be undone!\n\n"
+                    "Are you sure you want to permanently delete this product?")
+                    .arg(productId)
+                    .arg(productName)
+                    .arg(category)
+                    .arg(priceInfo)
+                    .arg(stockQuantity, 0, 'f', 2)
+                    .arg(unitType)
+                    .arg(status)
+                    .arg(dateAdded);
+
+            // Create custom message box with detailed information
+            QMessageBox confirmBox;
+            confirmBox.setWindowTitle("Confirm Product Deletion");
+            confirmBox.setText("Delete Product Confirmation");
+            confirmBox.setDetailedText(detailedMessage);
+            confirmBox.setIcon(QMessageBox::Warning);
+            confirmBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+            confirmBox.setDefaultButton(QMessageBox::No);
+
+            // Set the main text to be more prominent
+            confirmBox.setInformativeText(
+                QString("Are you sure you want to delete product: \"%1\"?")
+                    .arg(productName));
+
+            // Show detailed text by default
+            foreach (QAbstractButton *button, confirmBox.buttons()) {
+                if (confirmBox.buttonRole(button) == QMessageBox::ActionRole) {
+                    button->click();
+                    break;
+                }
+            }
+
+            int result = confirmBox.exec();
+
+            if (result == QMessageBox::Yes) {
+                // Proceed with deletion
+                QSqlQuery deleteQuery;
+                deleteQuery.prepare("DELETE FROM products WHERE ProductID = ?");
+                deleteQuery.bindValue(0, productId);
+
+                if (deleteQuery.exec()) {
+                    QMessageBox::information(
+                        this, "Success",
+                        QString("Product \"%1\" has been deleted successfully!")
+                            .arg(productName));
+                    refreshProductData();
+                } else {
+                    QMessageBox::critical(
+                        this, "Database Error",
+                        "Failed to delete product from database:\n" +
+                            deleteQuery.lastError().text());
+                }
+            }
+        } else {
+            QMessageBox::critical(this, "Error",
+                                  "Failed to retrieve product details:\n" +
+                                      query.lastError().text());
         }
     } else {
-        QMessageBox::warning(this, "No Selection",
-                             "Please select a product to delete.");
+        QMessageBox::warning(
+            this, "No Selection",
+            "Please select a product from the table to delete.");
     }
 }
 
