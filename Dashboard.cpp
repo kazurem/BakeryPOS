@@ -247,7 +247,6 @@ void dashboard::on_EditProductButton_clicked() {
                              "Please select a product to edit.");
     }
 }
-
 void dashboard::on_DeleteProductButton_clicked() {
     QModelIndexList selectedIndexes =
         ui->ProductPageTableView->selectionModel()->selectedRows();
@@ -297,17 +296,15 @@ void dashboard::on_DeleteProductButton_clicked() {
 
             // Create detailed confirmation message
             QString detailedMessage =
-                QString(
-                    "You are about to delete the following product:\n\n"
-                    "Product ID: %1\n"
-                    "Name: %2\n"
-                    "Category: %3\n"
-                    "%4\n"
-                    "Stock Quantity: %5 %6\n"
-                    "Status: %7\n"
-                    "Date Added: %8\n\n"
-                    "⚠️ WARNING: This action cannot be undone!\n\n"
-                    "Are you sure you want to permanently delete this product?")
+                QString("Product Details:\n\n"
+                        "Product ID: %1\n"
+                        "Name: %2\n"
+                        "Category: %3\n"
+                        "%4\n"
+                        "Stock Quantity: %5 %6\n"
+                        "Status: %7\n"
+                        "Date Added: %8\n\n"
+                        "⚠️ WARNING: This action cannot be undone!")
                     .arg(productId)
                     .arg(productName)
                     .arg(category)
@@ -317,27 +314,52 @@ void dashboard::on_DeleteProductButton_clicked() {
                     .arg(status)
                     .arg(dateAdded);
 
-            // Create custom message box with detailed information
+            // Create message box with explicit styling to fix white text on
+            // white background
             QMessageBox confirmBox;
+            confirmBox.setParent(this);
             confirmBox.setWindowTitle("Confirm Product Deletion");
-            confirmBox.setText("Delete Product Confirmation");
-            confirmBox.setDetailedText(detailedMessage);
-            confirmBox.setIcon(QMessageBox::Warning);
+            confirmBox.setIcon(QMessageBox::Question);
+
+            // Set explicit styling to ensure visibility
+            confirmBox.setStyleSheet("QMessageBox { "
+                                     "   background-color: #f0f0f0; "
+                                     "   color: #000000; "
+                                     "} "
+                                     "QMessageBox QLabel { "
+                                     "   color: #000000; "
+                                     "   background-color: transparent; "
+                                     "} "
+                                     "QPushButton { "
+                                     "   background-color: #e0e0e0; "
+                                     "   border: 1px solid #a0a0a0; "
+                                     "   color: #000000; "
+                                     "   padding: 5px 15px; "
+                                     "   border-radius: 3px; "
+                                     "} "
+                                     "QPushButton:hover { "
+                                     "   background-color: #d0d0d0; "
+                                     "} "
+                                     "QPushButton:pressed { "
+                                     "   background-color: #c0c0c0; "
+                                     "}");
+
+            confirmBox.setText(
+                QString("Are you sure you want to delete product: \"%1\"?\n\n"
+                        "Product ID: %2\n"
+                        "Category: %3\n"
+                        "%4\n"
+                        "Stock: %5 %6\n\n"
+                        "⚠️ WARNING: This action cannot be undone!")
+                    .arg(productName)
+                    .arg(productId)
+                    .arg(category)
+                    .arg(priceInfo)
+                    .arg(stockQuantity, 0, 'f', 2)
+                    .arg(unitType));
+
             confirmBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
             confirmBox.setDefaultButton(QMessageBox::No);
-
-            // Set the main text to be more prominent
-            confirmBox.setInformativeText(
-                QString("Are you sure you want to delete product: \"%1\"?")
-                    .arg(productName));
-
-            // Show detailed text by default
-            foreach (QAbstractButton *button, confirmBox.buttons()) {
-                if (confirmBox.buttonRole(button) == QMessageBox::ActionRole) {
-                    button->click();
-                    break;
-                }
-            }
 
             int result = confirmBox.exec();
 
@@ -360,6 +382,8 @@ void dashboard::on_DeleteProductButton_clicked() {
                             deleteQuery.lastError().text());
                 }
             }
+            // If result is QMessageBox::No, the dialog simply closes normally
+
         } else {
             QMessageBox::critical(this, "Error",
                                   "Failed to retrieve product details:\n" +
@@ -371,7 +395,6 @@ void dashboard::on_DeleteProductButton_clicked() {
             "Please select a product from the table to delete.");
     }
 }
-
 void dashboard::on_AddProductButton_clicked() {
     // Create a new EditProductForm for adding (without loading existing data)
     EditProductForm *addForm = new EditProductForm(this);

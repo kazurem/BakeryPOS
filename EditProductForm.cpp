@@ -76,7 +76,7 @@ void EditProductForm::loadProductData(int productId) {
 
     QSqlQuery query;
     query.prepare("SELECT Name, Category, PricePerKg, PricePerUnit, "
-                  "StockQuantity FROM products WHERE ProductID = ?");
+                  "StockQuantity, UnitType FROM products WHERE ProductID = ?");
     query.bindValue(0, productId);
 
     if (query.exec() && query.next()) {
@@ -106,6 +106,10 @@ void EditProductForm::loadProductData(int productId) {
 
         ui->ProductStockQuantityLineEdit->setText(
             QString::number(query.value("StockQuantity").toDouble(), 'f', 2));
+
+        // Note: UnitType is loaded but we don't display it in the form
+        // It will be automatically determined based on which price fields are
+        // filled
 
         updatePriceFieldsVisibility();
     } else {
@@ -163,6 +167,24 @@ bool EditProductForm::validateInput() {
         return false;
     }
 
+    // Check for duplicate product names (only when adding new products)
+    if (currentProductId == -1) {
+        QSqlQuery checkQuery;
+        checkQuery.prepare("SELECT COUNT(*) FROM products WHERE Name = ?");
+        checkQuery.bindValue(0, ui->ProductNameLineEdit->text().trimmed());
+
+        if (checkQuery.exec() && checkQuery.next()) {
+            int count = checkQuery.value(0).toInt();
+            if (count > 0) {
+                QMessageBox::warning(this, "Validation Error",
+                                     "A product with this name already exists. "
+                                     "Please choose a different name.");
+                ui->ProductNameLineEdit->setFocus();
+                return false;
+            }
+        }
+    }
+
     return true;
 }
 
@@ -174,17 +196,22 @@ void EditProductForm::on_CategoryComboBox_currentTextChanged(
 void EditProductForm::on_SaveButton_clicked() {
     if (!validateInput()) { return; }
 
-    if (currentProductId == -1) {
-        QMessageBox::critical(this, "Error",
-                              "No product selected for editing.");
-        return;
-    }
-
-    // Prepare the update query
     QSqlQuery query;
-    QString   queryString =
-        "UPDATE products SET Name = ?, Category = ?, PricePerKg = ?, "
-        "PricePerUnit = ?, StockQuantity = ? WHERE ProductID = ?";
+    QString   queryString;
+
+    if (currentProductId == -1) {
+        // Adding new product - include UnitType and let date_added and status
+        // use defaults
+        queryString = "INSERT INTO products (Name, Category, PricePerKg, "
+                      "PricePerUnit, StockQuantity, UnitType) "
+                      "VALUES (?, ?, ?, ?, ?, ?)";
+    } else {
+        // Updating existing product
+        queryString =
+            "UPDATE products SET Name = ?, Category = ?, PricePerKg = ?, "
+            "PricePerUnit = ?, StockQuantity = ?, UnitType = ? WHERE ProductID "
+            "= ?";
+    }
 
     query.prepare(queryString);
     query.bindValue(0, ui->ProductNameLineEdit->text().trimmed());
@@ -207,17 +234,47 @@ void EditProductForm::on_SaveButton_clicked() {
     }
 
     query.bindValue(4, ui->ProductStockQuantityLineEdit->text().toDouble());
-    query.bindValue(5, currentProductId);
+
+    // Determine unit type based on which price field is filled
+    // Your enum values are 'kg' and 'unit' (not 'pieces')
+    QString unitType = "unit"; // default
+    if (!pricePerKgText.isEmpty() && pricePerUnitText.isEmpty()) {
+        unitType = "kg";
+    } else if (pricePerKgText.isEmpty() && !pricePerUnitText.isEmpty()) {
+        unitType = "unit";
+    } else if (!pricePerKgText.isEmpty() && !pricePerUnitText.isEmpty()) {
+        // If both prices are provided, default to 'unit' since we can't use
+        // 'both'
+        unitType = "unit";
+    }
+    query.bindValue(5, unitType);
+
+    if (currentProductId != -1) {
+        // For update, bind the product ID
+        query.bindValue(6, currentProductId);
+    }
 
     if (query.exec()) {
-        QMessageBox::information(this, "Success",
-                                 "Product updated successfully!");
+        QString successMessage;
+        if (currentProductId == -1) {
+            successMessage = "Product added successfully!";
+        } else {
+            successMessage = "Product updated successfully!";
+        }
+
+        QMessageBox::information(this, "Success", successMessage);
         emit productUpdated(); // Notify parent to refresh data
         this->close();
     } else {
-        QMessageBox::critical(this, "Error",
-                              "Failed to update product: " +
-                                  query.lastError().text());
+        QString errorMessage;
+        if (currentProductId == -1) {
+            errorMessage = "Failed to add product: " + query.lastError().text();
+        } else {
+            errorMessage =
+                "Failed to update product: " + query.lastError().text();
+        }
+
+        QMessageBox::critical(this, "Error", errorMessage);
     }
 }
 
