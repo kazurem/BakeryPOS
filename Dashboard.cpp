@@ -20,13 +20,13 @@ dashboard::dashboard(QWidget *parent)
     QSqlDatabase db =
         QSqlDatabase::addDatabase("QMYSQL"); // Or QSQLITE, QPSQL, etc.
     db.setHostName("localhost");
-    db.setDatabaseName("mydb");
-    db.setUserName("root");
-    db.setPassword("khalid");
+    db.setDatabaseName("bakerydb");
+    db.setUserName("test");
+    db.setPassword("1234");
     db.open();
 
     this->Model     = new QSqlQueryModel(this);
-    this->BaseQuery = "SELECT * FROM products";
+    this->BaseQuery = "SELECT * FROM Products";
     Model->setQuery(BaseQuery);
     ui->ProductPageTableView->setModel(Model);
     UpdateProductRecordCountLabel();
