@@ -2,7 +2,7 @@
 A Point Of Sale System for a Bakery made using PySide6.
 
 ## Screenshots
-![products page](./readme-assets/product.png)
+![products page](./assets/readme/product.png)
 
 ## How to run
 
