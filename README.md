@@ -2,7 +2,6 @@
 A Point Of Sale System for a Bakery.
 
 ## Screenshots
-![login page](./readme-assets/login.png)
 ![products page](./readme-assets/product.png)
 
 ## How to run
