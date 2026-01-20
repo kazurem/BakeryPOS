@@ -1,27 +1,54 @@
 # BakeryPOS
-A Point Of Sale System for a Bakery.
+A Point Of Sale System for a Bakery made using PySide6.
 
 ## Screenshots
 ![products page](./readme-assets/product.png)
 
 ## How to run
-#### Qt Creator
-You need to have [Qt Creator](https://www.qt.io/development/tools/qt-creator-ide) installed. You have to clone this repo and then open the project in Qt Creator using the _Bakery.pro_ file.
+
+### Prerequisites
+1. [Python](https://www.python.org/)
+2. [pip](https://pypi.org/project/pip/)
+3. [MySql Server](https://www.mysql.com/)
+
+### Clone Repo
 ```bash
-# cloning the repo into local computer
 git clone https://github.com/kazurem/BakeryPOS
+
+# move into the cloned project
+cd BakeryPOS
+
+# Checkout to the python branch of BakeryPOS
+git checkout bakepy
 ```
-#### Database 
-You need to have [MySql](https://www.mysql.com/) installed on your system too. After that, you'll need to create a user and set their password. Once this has been done, you have to create a database using the _bakerydb.sql_ file. Please make sure that all of the above details match the ones given in the code below.
-```cpp
-QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
-db.setHostName("localhost");
-db.setDatabaseName("bakerydb");
-db.setUserName("test");
-db.setPassword("1234");
-db.open();
+
+### Virtual Environment
+```bash
+python -m venv .venv
+
+# linux
+source .venv/bin/activate
+
+#windows
+.\.venv\Scripts\activate.bat
 ```
-> [!NOTE] 
-> This is only a temporary solution, for the purposes of development.
-#### Build and Run
-Use Qt Creator to build and run the project.
+
+### Package Installation
+The following command will install all the necessary packages.
+```bash
+pip install -r requirements.txt
+```
+
+### Database 
+You need to have [MySql](https://www.mysql.com/) installed on your system too. After that, you'll need to create a user and set their password. Name the user **test** and set it's password to be **1234**. Once this has been done, you have to create a database using the _bakerydb.sql_ file. Name the database **bakerydb**.
+> [!WARNING] 
+> Username **test** and password **1234** are only a temporary solution, for the purposes of development.
+
+### Build and Run
+```bash
+# move into the source directory
+cd src
+
+# run the project
+python main.py
+```
