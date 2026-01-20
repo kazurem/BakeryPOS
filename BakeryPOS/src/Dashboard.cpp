@@ -3,7 +3,7 @@
 #include "ui_Dashboard.h"
 
 #include "Utils.h"
-#include <login.h>
+#include "Login.h"
 
 #include <QSqlDatabase>
 #include <QSqlQueryModel>
@@ -264,7 +264,7 @@ void dashboard::on_DeleteProductButton_clicked() {
         QSqlQuery query;
         query.prepare("SELECT ProductID, Name, Category, PricePerKg, "
                       "PricePerUnit, StockQuantity, UnitType, date_added, "
-                      "status FROM products WHERE ProductID = ?");
+                      "status FROM Products WHERE ProductID = ?");
         query.bindValue(0, productId);
 
         if (query.exec() && query.next()) {
@@ -366,7 +366,7 @@ void dashboard::on_DeleteProductButton_clicked() {
             if (result == QMessageBox::Yes) {
                 // Proceed with deletion
                 QSqlQuery deleteQuery;
-                deleteQuery.prepare("DELETE FROM products WHERE ProductID = ?");
+                deleteQuery.prepare("DELETE FROM Products WHERE ProductID = ?");
                 deleteQuery.bindValue(0, productId);
 
                 if (deleteQuery.exec()) {
@@ -414,7 +414,7 @@ void dashboard::on_FilterRoleComboBox_currentIndexChanged() {
 
 void dashboard::on_UsersButton_clicked() {
     ui->MainDisplayStackedWidget->setCurrentIndex(3);
-    this->BaseQuery = "SELECT * FROM users";
+    this->BaseQuery = "SELECT * FROM Users";
     this->Model->setQuery(BaseQuery);
     ui->UserPageTableView->setModel(Model);
     UpdateUserRecordCountLabel();
@@ -422,7 +422,7 @@ void dashboard::on_UsersButton_clicked() {
 
 void dashboard::on_ProductsButton_clicked() {
     ui->MainDisplayStackedWidget->setCurrentIndex(0);
-    this->BaseQuery = "SELECT * FROM products";
+    this->BaseQuery = "SELECT * FROM Products";
     this->Model->setQuery(BaseQuery);
     ui->ProductPageTableView->setModel(Model);
 }

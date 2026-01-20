@@ -176,7 +176,7 @@ QTableWidget::item:selected {
       <string notr="true">font-size:40px;</string>
      </property>
      <property name="text">
-      <string>Add Product</string>
+      <string>Edit Product</string>
      </property>
     </widget>
    </item>

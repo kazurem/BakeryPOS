@@ -8,23 +8,28 @@ CONFIG += c++17
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+INCLUDEPATH += BakeryPOS/include
+
 SOURCES += \
-    EditProductForm.cpp \
-    login.cpp \
-    Dashboard.cpp \
-    Utils.cpp \
-    main.cpp
+    BakeryPOS/src/AddProductForm.cpp \
+    BakeryPOS/src/Dashboard.cpp \
+    BakeryPOS/src/EditProductForm.cpp \
+    BakeryPOS/src/Login.cpp \
+    BakeryPOS/src/Main.cpp \
+    BakeryPOS/src/Utils.cpp
 
 HEADERS += \
-    Dashboard.h \
-    EditProductForm.h \
-    Utils.h \
-    login.h
+    BakeryPOS/include/AddProductForm.h \
+    BakeryPOS/include/Dashboard.h \
+    BakeryPOS/include/EditProductForm.h \
+    BakeryPOS/include/Login.h \
+    BakeryPOS/include/Utils.h
 
 FORMS += \
-    Dashboard.ui \
-    EditProductForm.ui \
-    login.ui
+    BakeryPOS/ui/AddProductForm.ui \
+    BakeryPOS/ui/Dashboard.ui \
+    BakeryPOS/ui/EditProductForm.ui \
+    BakeryPOS/ui/Login.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
